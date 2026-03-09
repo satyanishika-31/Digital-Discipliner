@@ -1,0 +1,26 @@
+body { font-family: 'Inter', sans-serif; }
+
+/* Habit Cube Styling */
+.cube {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    background: #1a1a1a;
+    transition: all 0.2s ease;
+}
+
+.cube.active {
+    background: #ff8c00;
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+}
+
+.cube:hover {
+    transform: scale(1.2);
+    z-index: 10;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #ff8c00; }
