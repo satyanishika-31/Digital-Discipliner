@@ -1,8 +1,20 @@
 # Build stage
 FROM maven:3-openjdk-21 AS build
 WORKDIR /app
+
+# Copy Maven wrapper and pom.xml
+COPY .mvn .mvn
+COPY mvnw .
+COPY mvnw.cmd .
 COPY pom.xml .
+
+# Download dependencies
+RUN mvn dependency:go-offline -B
+
+# Copy source code
 COPY src ./src
+
+# Build the application
 RUN mvn clean package -DskipTests
 
 # Run stage
