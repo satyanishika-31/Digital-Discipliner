@@ -24,7 +24,7 @@ A lifestyle app to build discipline through daily tracking, visualization, and g
 -
 ---
 
-### 6. **Evolution Ranking**
+###  **Evolution Ranking**
 ```markdown
 ## Evolution Ranking
 - 🌑 Neutral (0%)
