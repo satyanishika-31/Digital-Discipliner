@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=1.1">
+    <title>Digital Discipline | Habit Tracker</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Archivo+Black&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">Digital Discipliner</div>
+
+
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="login.html">login</a></li>
+            <li><a href="profile.html">profile</a></li>
+            <li><a href="habit.html" target="_top">Habit</a></li>
+            <li><a href="javascript:void(0)" onclick="handleLogout()" class="logout-link">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="bg-image-overlay fixed inset-0 z-0"></div>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-10">
+        <h1 class="text-6xl md:text-[120px] font-extrabold tracking-tight leading-none text-orange-500">
+            Digital <span class="text-white">Discipline</span>
+        </h1>
+        <p class="mt-6 text-gray-400 max-w-2xl mx-auto text-lg italic">
+            "A silent architect of destiny—born of repetition, hardened by time, until it moves without thought,
+            shaping life with invisible hands."
+        </p>
+    </section>
+
+
+    <section class="hero_2">
+        <div class="features-wrapper">
+            <h2 class="features-title">Features We Provide</h2>
+
+            <div class="features-grid">
+                <aside class="block_1">
+                    <img src="box_1.png" alt="Daily Tracking Icon">
+                    <div class="content">
+                        <h2>Daily Tracking</h2>
+                        <hr>
+                        <p>Stay organized and stay focused. Track your wins, learn from your misses, and become the best
+                            version of yourself.</p>
+                    </div>
+                </aside>
+
+                <aside class="block_1">
+                    <img src="box_2.png" alt="Dashboard Icon">
+                    <div class="content">
+                        <h2>The Dashboard</h2>
+                        <hr>
+                        <p>We provide a clean dashboard to visualize what’s working, so you can focus on growing.</p>
+                    </div>
+                </aside>
+
+                <aside class="block_1">
+                    <img src="box_3.png" alt="Insights Icon">
+                    <div class="content">
+                        <h2>Progress Insights</h2>
+                        <hr>
+                        <p>Our dashboard turns your logs into a visual summary, showing you exactly how close you are to
+                            your goals.</p>
+                    </div>
+                </aside>
+
+                <aside class="block_1">
+                    <img src="box_4.png" alt="Profile Icon">
+                    <div class="content">
+                        <h2>Profile Management</h2>
+                        <hr>
+                        <p>View your personal records and download your full profile as a PDF summary. Your growth is
+                            documented.</p>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-container">
+        <div class="about-glass-overlay">
+            <div class="about-content">
+                <div class="about-text-side">
+                    <h2 class="section-title">Master Your Consistency</h2>
+                    <p class="section-description">
+                        Success isn't about giant leaps; it's about small, daily wins. Our tracker uses the
+                        <span class="highlight">Visual Chain Method</span>. Every time you complete a task,
+                        you fill a cube.
+                    </p>
+
+                    <div class="task-steps">
+                        <div class="step">
+                            <span class="step-num">01</span>
+                            <div class="step-info">
+                                <h4>Define Your Goals</h4>
+                                <p>Create custom tasks like "Coding", "Gym", or "Reading".</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <span class="step-num">02</span>
+                            <div class="step-info">
+                                <h4>Mark Your Progress</h4>
+                                <p>Click the grid to log your activity. Every cube is a victory.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <span class="step-num">03</span>
+                            <div class="step-info">
+                                <h4>Visualize Growth</h4>
+                                <p>Analyze your year at a glance and build unbreakable streaks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-image-side">
+                    <div class="image-wrapper">
+                        <img src="p2.png" alt="Consistency" class="floating-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<<section class="mt-12 px-8 py-16 bg-transparent rounded-3xl border border-zinc-800/30 shadow-[inset_0_4px_20px_rgba(0,0,0,0.6)]">
+    <div class="mb-14 text-center">
+        <h2 class="text-5xl md:text-6xl font-black italic uppercase tracking-tighter text-white">
+            Consistency <span class="text-zinc-500">Protocol</span>
+        </h2>
+        <p class="text-zinc-500 text-lg mt-4 font-bold tracking-wide">
+            THE EVOLUTION RANKING: ADVANCE YOUR ANNUAL PERCENTAGE TO UNLOCK STATUS.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 px-6">
+
+        <div class="flex flex-col items-center p-8 rounded-xl bg-zinc-800 border-b-[10px] border-zinc-950 shadow-2xl transition-all hover:-translate-y-2 hover:brightness-110">
+            <span class="text-7xl mb-6">🌑</span>
+            <h3 class="text-zinc-400 font-black uppercase text-xl tracking-tighter">Neutral</h3>
+            <p class="text-sm text-zinc-500 font-black mt-2 bg-black/40 px-3 py-1 rounded">0% PROGRESS</p>
+            <p class="text-sm text-zinc-400 text-center mt-4 font-medium leading-relaxed">System idle. No data recorded.</p>
+        </div>
+
+        <div class="flex flex-col items-center p-8 rounded-xl bg-slate-600 border-b-[10px] border-slate-900 shadow-2xl transition-all hover:-translate-y-2 hover:brightness-110">
+            <span class="text-7xl mb-6">🧊</span>
+            <h3 class="text-white font-black uppercase text-xl tracking-tighter">Spark</h3>
+            <p class="text-sm text-blue-200 font-black mt-2 bg-black/40 px-3 py-1 rounded">1% — 24%</p>
+            <p class="text-sm text-slate-100 text-center mt-4 font-medium leading-relaxed">The engine ignites. Initial habits established.</p>
+        </div>
+
+        <div class="flex flex-col items-center p-8 rounded-xl bg-cyan-700 border-b-[10px] border-cyan-950 shadow-2xl transition-all hover:-translate-y-2 hover:brightness-110">
+            <span class="text-7xl mb-6">🌊</span>
+            <h3 class="text-white font-black uppercase text-xl tracking-tighter">Steady</h3>
+            <p class="text-sm text-cyan-200 font-black mt-2 bg-black/40 px-3 py-1 rounded">25% — 49%</p>
+            <p class="text-sm text-cyan-50 text-center mt-4 font-medium leading-relaxed">Finding flow. Discipline becomes rhythm.</p>
+        </div>
+
+        <div class="flex flex-col items-center p-8 rounded-xl bg-orange-700 border-b-[10px] border-orange-950 shadow-2xl transition-all hover:-translate-y-2 hover:brightness-110">
+            <span class="text-7xl mb-6">🔥</span>
+            <h3 class="text-white font-black uppercase text-xl tracking-tighter">Momentum</h3>
+            <p class="text-sm text-orange-200 font-black mt-2 bg-black/40 px-3 py-1 rounded">50% — 74%</p>
+            <p class="text-sm text-orange-50 text-center mt-4 font-medium leading-relaxed">Habits are now automatic responses.</p>
+        </div>
+
+        <div class="flex flex-col items-center p-8 rounded-xl bg-purple-700 border-b-[10px] border-purple-950 shadow-2xl transition-all hover:-translate-y-2 hover:brightness-110">
+            <span class="text-7xl mb-6">⚡</span>
+            <h3 class="text-white font-black uppercase text-xl tracking-tighter">Elite</h3>
+            <p class="text-sm text-purple-200 font-black mt-2 bg-black/40 px-3 py-1 rounded">75% — 99%</p>
+            <p class="text-sm text-purple-50 text-center mt-4 font-medium leading-relaxed">Mastery level. Peak schedule control.</p>
+        </div>
+
+        <div class="flex flex-col items-center p-8 rounded-xl bg-yellow-500 border-b-[10px] border-yellow-800 shadow-2xl transition-all hover:-translate-y-2 hover:brightness-110">
+            <span class="text-7xl mb-6">👑</span>
+            <h3 class="text-black font-black uppercase text-xl tracking-tighter">Legendary</h3>
+            <p class="text-sm text-black font-black mt-2 bg-black/20 px-3 py-1 rounded">100% PERFECT</p>
+            <p class="text-sm text-black text-center mt-4 font-bold leading-relaxed">Total mastery of your life.</p>
+        </div>
+
+    </div>
+</section>   <script>
+        // 1. Run this as soon as the page loads
+
+
+        // 2. This function runs when the user clicks "Logout"
+        function handleLogout() {
+            // This wipes everything so the next user starts fresh
+            localStorage.clear();
+            alert("System logged out.");
+            window.location.replace('login.html');
+        }
+
+    </script>
+
+
+</body>
+
+</html>
