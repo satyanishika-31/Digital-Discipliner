@@ -2,16 +2,11 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY .mvn .mvn
-COPY mvnw .
-COPY mvnw.cmd .
-COPY pom.xml .
+# Copy habit project files only
+COPY habit/pom.xml .
+COPY habit/src ./src
 
-# Copy source code
-COPY src ./src
-
-# Build the application
+# Build
 RUN mvn -B clean package -DskipTests
 
 # Run stage
