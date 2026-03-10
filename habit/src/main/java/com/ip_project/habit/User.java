@@ -22,6 +22,8 @@ public class User {
     private String password;
 
     // Getters and setters
+    public Long getId() { return id; }
+    
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     

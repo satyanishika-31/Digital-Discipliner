@@ -39,7 +39,7 @@ public class HabitController {
                 request.getEmail(), request.getTaskName(), request.getMonth(), request.getDay());
 
         if (existing.isPresent()) {
-            habitRepository.delete(existing.get());
+            existing.ifPresent(habitRepository::delete);
             habitRepository.flush();
             System.out.println("SUCCESS: Removed from database.");
             return ResponseEntity.ok("Habit Unchecked");
