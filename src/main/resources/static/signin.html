@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Habit Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+    .bg-image-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Replace the URL below with your image link */
+        background-image: url('p3.png');
+        background-size: cover;
+        background-position: center;
+        filter: grayscale(50%) brightness(90%); /* Makes it moody/dark to match your theme */
+        z-index: 0;
+    }
+</style>
+
+</head>
+
+<body class="bg-black overflow-hidden">
+    <div class="bg-image-overlay"></div>
+
+    <div class="relative z-10 flex h-screen w-full justify-end items-stretch">
+        <div class="hidden lg:flex flex-1 flex-col justify-center p-20">
+            <h1 class="text-8xl font-black text-white/10 tracking-tighter leading-none">
+                Join the<br><span class="text-orange-500/20"> STREAK</span>
+            </h1>
+        </div>
+
+        <div
+            class="w-full max-w-[450px] bg-black/80 backdrop-blur-xl border-l border-white/10 p-10 md:p-16 flex flex-col justify-center shadow-orange">
+
+            <div class="mb-8">
+                <div class="h-1 w-12 bg-orange-500 mb-6"></div>
+                <h2 class="text-4xl font-black text-white tracking-tight uppercase">Sign Up</h2>
+                <p class="text-zinc-500 mt-2 font-medium">Start your journey today.</p>
+            </div>
+
+            <form action="RegisterServlet" method="POST" class="space-y-5">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Full Name</label>
+                    <input type="text" name="fullName" required
+                        class="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-lg text-white outline-none focus:border-orange-500">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Email Address</label>
+                    <input type="email" name="email" required
+                        class="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-lg text-white outline-none focus:border-orange-500">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Password</label>
+                    <input type="password" name="password" required
+                        class="w-full bg-zinc-900/50 border border-zinc-800 p-4 rounded-lg text-white outline-none focus:border-orange-500">
+                </div>
+                <button type="submit"
+                    class="w-full bg-orange-500 py-4 mt-4 rounded-lg text-black font-black uppercase tracking-widest hover:bg-orange-400 transition">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="mt-10 pt-10 border-t border-white/5 text-center text-sm">
+                <span class="text-zinc-500">Already have an account?</span>
+                <a href="login.html" class="text-white font-bold ml-1 hover:text-orange-500 transition">Login</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

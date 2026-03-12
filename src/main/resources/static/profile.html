@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Dashboard | Analytics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #050505;
+      color: #fffaf6;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .grid-cube {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    .cube-empty {
+      background-color: #1a1a1a;
+    }
+
+    .cube-active {
+      background-color: #ff8c00;
+      box-shadow: 0 0 8px #ff8c0044;
+    }
+
+    .navbar {
+      border-bottom: 1px solid #1a1a1a;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bio-input {
+      background: transparent;
+      border-bottom: 1px solid #333;
+      width: 100%;
+      padding: 5px 0;
+      font-size: 13px;
+      color: #888;
+      transition: 0.3s;
+    }
+
+    .bio-input:focus {
+      border-color: #ff8c00;
+      outline: none;
+      color: rgba(180, 64, 14, 0.856);
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar no-print">
+    <div class="text-2xl font-black text-orange-500 italic">Habit Tracker</div>
+    <div class="flex gap-6 items-center">
+      <a href="index.html" class="text-zinc-500 hover:text-white font-bold text-sm">HOME</a>
+      <a href="habit.html" class="text-zinc-500 hover:text-white font-bold text-sm">HABIT</a>
+      <button onclick="downloadPDF()" class="bg-orange-500 text-black px-4 py-2 rounded font-black text-xs">EXPORT
+        PDF</button>
+    </div>
+  </nav>
+
+  <div class="flex flex-col lg:flex-row" id="capture-area">
+    <aside class="w-full lg:w-80 bg-[#0a0a0a] border-r border-zinc-800 p-8 flex flex-col min-h-screen">
+      <div class="text-center mb-8">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <div class="w-full h-full rounded-full border-2 border-orange-500 p-1">
+            <img id="userAvatar" src="https://ui-avatars.com/api/?name=U&background=1a1a1a&color=ff8c00"
+              class="rounded-full w-full h-full">
+          </div>
+        </div>
+        <input type="text" id="userNameInput" readonly
+          class="bg-transparent text-center text-xl font-black uppercase italic text-white border-b border-transparent outline-none w-full mb-1 cursor-default">
+        <p id="displayEmail" class="text-[10px] text-zinc-600 font-mono mb-4 uppercase tracking-tighter"></p>
+
+        <div
+          class="inline-block bg-orange-500/10 text-orange-500 text-[9px] font-bold px-2 py-0.5 rounded border border-orange-500/20 tracking-widest uppercase">
+          Level <span id="userLevel">1</span> Tracker
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div>
+          <label class="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Personal Bio</label>
+          <textarea id="userBio" class="bio-input h-20 resize-none" placeholder="Goals..."></textarea>
+        </div>
+        <div class="pt-4 border-t border-zinc-900">
+          <h4 class="text-[10px] font-bold text-zinc-500 uppercase mb-4">Global Stats</h4>
+          <div class="flex justify-between text-sm mb-2"><span>Habits</span> <span id="count-habits"
+              class="text-white">0</span></div>
+          <div class="flex justify-between text-sm mb-2"><span>Total Ticks</span> <span id="count-total"
+              class="text-white">0</span></div>
+          <div class="flex justify-between text-sm mb-2"><span>Consistency</span> <span id="stat-consistency"
+              class="text-white">0%</span></div>
+        </div>
+      </div>
+      <div id="streak-badge-container" class="mt-6 p-4 rounded-xl text-center transition-all duration-300">
+        <div id="badge-icon" class="text-3xl mb-1"></div>
+        <div id="badge-rank" class="text-xs tracking-widest uppercase font-black"></div>
+        <div id="badge-status" class="text-[8px] opacity-60 font-bold"></div>
+      </div>
+
+    </aside>
+
+    <main class="flex-1 p-8 md:p-12">
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 items-center bg-zinc-900/30 p-8 rounded-3xl border border-zinc-800">
+        <div class="col-span-1 flex justify-center">
+          <div style="width: 150px; height: 150px; position: relative;">
+            <canvas id="completionChart"></canvas>
+            <div class="absolute inset-0 flex items-center justify-center flex-col">
+              <span id="percentText" class="text-2xl font-black text-white">0%</span>
+              <span class="text-[8px] text-zinc-500 font-bold uppercase tracking-widest">Success</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-2">
+          <h3 class="text-2xl font-black italic mb-2">PERFORMANCE <span class="text-orange-500">SUMMARY</span></h3>
+          <p id="summaryText" class="text-zinc-500 text-sm leading-relaxed italic">Systematic consistency report
+            generated from database records.</p>
+        </div>
+      </div>
+
+      <div id="habitsList" class="space-y-12"></div>
+    </main>
+  </div>
+
+  <script>
+    // 1. Setup - Month names must match your Java Database exactly
+    const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+    const userEmail = localStorage.getItem('userEmail');
+    const userName = localStorage.getItem('userName');
+
+    if (!userEmail) window.location.replace('login.html');
+
+    let tasks = []; // We will fill this from the API
+    let myChart;
+
+    // 2. Fetch Data from your Java Backend
+    async function loadProfileData() {
+      try {
+        const response = await fetch(`/api/habits/${userEmail}`);
+        if (response.ok) {
+          const dbData = await response.json();
+
+          // Rebuild the tasks structure from the flat DB rows
+          const uniqueNames = [...new Set(dbData.map(item => item.taskName))];
+          tasks = uniqueNames.map(name => ({
+            name: name,
+            progress: {}
+          }));
+
+          // Fill the progress map
+          dbData.forEach(entry => {
+            const task = tasks.find(t => t.name === entry.taskName);
+            if (task) {
+              if (!task.progress[entry.monthName]) task.progress[entry.monthName] = [];
+              task.progress[entry.monthName].push(entry.dayVal);
+            }
+          });
+
+          renderProfile();
+        }
+      } catch (err) {
+        console.error("Profile sync error:", err);
+        document.getElementById('habitsList').innerHTML =
+          `<p class="text-red-500 text-center">Server Connection Error. Is your Java Backend running?</p>`;
+      }
+    }
+
+   // 3. Render Profile & Calculate Percentage
+function renderProfile() {
+    const listContainer = document.getElementById('habitsList');
+    const nameInput = document.getElementById('userNameInput');
+    const emailDisplay = document.getElementById('displayEmail');
+
+    // Update Header/Sidebar info
+    if (nameInput) nameInput.value = userName || "OPERATOR";
+    if (emailDisplay) emailDisplay.innerText = userEmail;
+
+    // Handle Empty State
+    if (tasks.length === 0) {
+        listContainer.innerHTML = `<div class="p-20 text-center text-zinc-600 font-mono text-sm uppercase">No Data Found in Database for ${userEmail}</div>`;
+        return;
+    }
+
+    let totalActiveTicks = 0;
+    listContainer.innerHTML = '';
+
+    // Generate the Habit Grids
+    tasks.forEach(task => {
+        let taskHtml = `
+            <div class="habit-row border-b border-zinc-900 pb-8 mt-6">
+                <h4 class="text-lg font-black text-white uppercase italic mb-6">${task.name}</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        `;
+
+        months.forEach(month => {
+            const daysChecked = task.progress[month] || [];
+            totalActiveTicks += daysChecked.length;
+
+            taskHtml += `
+                <div class="bg-zinc-900/30 p-3 rounded border border-zinc-800/50">
+                    <p class="text-[9px] font-bold text-zinc-600 mb-2 uppercase">${month}</p>
+                    <div class="flex flex-wrap gap-1">`;
+            
+            // Loop through days of the month
+            for (let i = 1; i <= 31; i++) {
+                taskHtml += `<div class="grid-cube ${daysChecked.includes(i) ? 'cube-active' : 'cube-empty'}"></div>`;
+            }
+            taskHtml += `</div></div>`;
+        });
+        
+        taskHtml += `</div></div>`;
+        listContainer.innerHTML += taskHtml;
+    });
+
+    // --- STATS CALCULATION ---
+    
+    // Update basic counts
+    document.getElementById('count-habits').innerText = tasks.length;
+    document.getElementById('count-total').innerText = totalActiveTicks;
+    
+    // Calculate global consistency percentage
+    let percentage = Math.round((totalActiveTicks / (tasks.length * 365)) * 100) || 0;
+    
+    // Update text displays
+    if(document.getElementById('percentText')) document.getElementById('percentText').innerText = percentage + "%";
+    if(document.getElementById('stat-consistency')) document.getElementById('stat-consistency').innerText = percentage + "%";
+
+    // --- TRIGGER UPDATES ---
+    
+    // 1. Update the 3D Matte Badge based on Percentage
+    updateStreakBadge(percentage); 
+    
+    // 2. Update the Doughnut Chart
+    updateChart(percentage);
+
+    // 3. Optional: Run streak logic if you still want to calculate consecutive days separately
+    if (typeof calculateStreakEngine === "function") {
+        calculateStreakEngine(tasks);
+    }
+}
+
+// 4. THE MATTE 3D BADGE ENGINE
+function updateStreakBadge(percent) {
+    const container = document.getElementById('streak-badge-container');
+    const icon = document.getElementById('badge-icon');
+    const rank = document.getElementById('badge-rank');
+    const status = document.getElementById('badge-status');
+
+    if (!container) return;
+
+    // Base 3D Matte Style
+    container.className = "mt-6 p-4 rounded-xl text-center border-b-8 shadow-lg transition-all duration-300";
+
+    if (percent === 0) {
+        container.classList.add("bg-zinc-800", "border-zinc-950");
+        icon.innerText = "🌑"; rank.innerText = "NEUTRAL"; rank.style.color = "#71717a";
+        status.innerText = "NO ACTIVITY";
+    } else if (percent < 25) {
+        container.classList.add("bg-slate-600", "border-slate-900", "text-white");
+        icon.innerText = "🧊"; rank.innerText = "SPARK"; rank.style.color = "#60a5fa";
+        status.innerText = "STREAK STARTED";
+    } else if (percent < 50) {
+        container.classList.add("bg-cyan-700", "border-cyan-950", "text-white");
+        icon.innerText = "🌊"; rank.innerText = "STEADY"; rank.style.color = "#22d3ee";
+        status.innerText = "BUILDING FLOW";
+    } else if (percent < 75) {
+        container.classList.add("bg-orange-700", "border-orange-950", "text-white");
+        icon.innerText = "🔥"; rank.innerText = "MOMENTUM"; rank.style.color = "#ff8c00";
+        status.innerText = "ON FIRE";
+    } else if (percent < 100) {
+        container.classList.add("bg-purple-700", "border-purple-950", "text-white");
+        icon.innerText = "⚡"; rank.innerText = "ELITE"; rank.style.color = "#a855f7";
+        status.innerText = "UNSTOPPABLE";
+    } else {
+        container.classList.add("bg-yellow-500", "border-yellow-700", "text-black");
+        icon.innerText = "👑"; rank.innerText = "LEGENDARY"; rank.style.color = "#000000";
+        status.innerText = "DISCIPLINE MASTERED";
+    }
+    rank.style.fontWeight = "900";
+}
+
+// 5. Chart Update
+function updateChart(percent) {
+    const canvas = document.getElementById('completionChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (myChart) myChart.destroy();
+    myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: { datasets: [{ data: [percent, 100 - percent], backgroundColor: ['#ff8c00', '#1a1a1a'], borderWidth: 0 }] },
+        options: { cutout: '85%', plugins: { tooltip: { enabled: false } } }
+    });
+}
+
+window.addEventListener('DOMContentLoaded', loadProfileData);
+   // ... existing code ...
+
+    // Initialize - Load from API instead of LocalStorage
+  </script>
+</body>
+
+</html>
